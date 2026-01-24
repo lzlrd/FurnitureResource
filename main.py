@@ -20,6 +20,10 @@ pack.add(CustomModelCompoment("cutebear_furniture","classic_desk_all",[]))
 pack.add(CustomModelCompoment("cutebear_furniture","classic_stool",[]))
 pack.add(CustomModelCompoment("cutebear_furniture","coffee_table_basic",[]))
 pack.add(CustomModelCompoment("cutebear_furniture","dinner_table",[]))
+pack.add(CustomModelCompoment("cutebear_furniture","chair_classic",[]))
+pack.add(CustomModelCompoment("cutebear_furniture","chair_modern",[]))
+pack.add(CustomModelCompoment("cutebear_furniture","chair_dinner",[]))
+pack.add(CustomModelCompoment("cutebear_furniture","bathtub",[]))
 pack.run("../cutebear_furniture.zip")
 
 os.system(
