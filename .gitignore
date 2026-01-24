@@ -1,0 +1,7 @@
+template/
+texture_pack/
+assets/
+.DS_Store
+mypack/assets/
+*.zip
+tmp/
