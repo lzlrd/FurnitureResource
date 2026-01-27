@@ -1,0 +1,3 @@
+[submodule "mcresourcelib"]
+	path = mcresourcelib
+	url = ssh://git@codeberg.org/cutebear/mcresourcelib.git
