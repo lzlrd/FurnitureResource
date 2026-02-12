@@ -3,6 +3,8 @@ from mcresourcelib import (
     CustomModelCompoment
 )
 import os
+import uuid
+namespace="cutebear_furniture"
 
 info = {
     "pack": {
@@ -14,21 +16,52 @@ info = {
     }
 }
 
-pack = Resourcepack(info, "pack.png")
-pack.add(CustomModelCompoment("cutebear_furniture","chair",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","classic_desk_all",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","classic_stool",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","coffee_table_basic",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","dinner_table",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","chair_classic",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","chair_modern",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","chair_dinner",[]))
-pack.add(CustomModelCompoment("cutebear_furniture","bathtub",[]))
+
+info_be={
+    "format_version": 2,
+    "header": {
+        "name": namespace,
+        "description": "Cutebear's furniture resouce pack",
+        "uuid": str(uuid.uuid4()),
+        "version": [1, 0, 0],
+        "min_engine_version": [1, 21, 110]
+    },
+    "metadata": {
+        "authors": ["cutebear"]
+    },
+    "modules": [
+        {
+        "description": "Cutebear's furniture resouce pack",
+            "type": "resources",
+            "uuid": str(uuid.uuid4()),
+            "version": [1, 0, 0]
+        }
+    ]
+}
+BASE_ITEM="poisonous_potato"
+
+pack = Resourcepack(info, "pack.png",info_be)
+pack.add(CustomModelCompoment("cutebear_furniture","chair",[],"chair.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","classic_desk_all",[],"classic_desk_all.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","classic_stool",[],"classic_stool.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","coffee_table_basic",[],"coffee_table_basic.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","dinner_table",[],"dinner_table.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","chair_classic",[],"chair_classic.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","chair_modern",[],"chair_modern.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","chair_dinner",[],"chair_dinner.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","bathtub",[],"bathtub.png",BASE_ITEM))
 pack.run("../cutebear_furniture.zip")
+pack.run_be("../cutebear_furniture.mcpack")
+pack.generate_geyser("cutebear_furniture.json")
 
 os.system(
-    "rm -f /home/cutebear/.local/share/PrismLauncher/instances/1.21.10/minecraft/resourcepacks/cutebear_furniture.zip"
+    "cp cutebear_furniture.json /home/cutebear/paper12110_geyser/plugins/Geyser-Spigot/custom_mappings"
 )
+
+os.system(
+    "cp ./cutebear_furniture.mcpack /home/cutebear/paper12110_geyser/plugins/Geyser-Spigot/packs"
+)
+
 os.system(
     "cp ./cutebear_furniture.zip /home/cutebear/.local/share/PrismLauncher/instances/1.21.10/minecraft/resourcepacks"
 )

@@ -4,4 +4,7 @@ assets/
 .DS_Store
 mypack/assets/
 *.zip
+cutebear_furniture.json
+*.mcpack
+tmp_be/
 tmp/
