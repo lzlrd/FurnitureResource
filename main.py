@@ -50,6 +50,12 @@ pack.add(CustomModelCompoment("cutebear_furniture","chair_classic",[],"chair_cla
 pack.add(CustomModelCompoment("cutebear_furniture","chair_modern",[],"chair_modern.png",BASE_ITEM))
 pack.add(CustomModelCompoment("cutebear_furniture","chair_dinner",[],"chair_dinner.png",BASE_ITEM))
 pack.add(CustomModelCompoment("cutebear_furniture","bathtub",[],"bathtub.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","basic_sink",[],"basic_sink.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","white_arm_chair",[],"white_arm_chair.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","trash_can",[],"trash_can.png",BASE_ITEM))
+pack.add(CustomModelCompoment("cutebear_furniture","toilet",[],"toilet.png",BASE_ITEM))
+
+
 pack.run("../cutebear_furniture.zip")
 pack.run_be("../cutebear_furniture.mcpack")
 pack.generate_geyser("cutebear_furniture.json")
