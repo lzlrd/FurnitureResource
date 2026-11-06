@@ -4,6 +4,8 @@ from mcresourcelib import (
 )
 import os
 import uuid
+from variant_component import VariantModelCompoment
+from variants import variants
 namespace="cutebear_furniture"
 
 info = {
@@ -54,6 +56,11 @@ pack.add(CustomModelCompoment("cutebear_furniture","basic_sink",[],"basic_sink.p
 pack.add(CustomModelCompoment("cutebear_furniture","white_arm_chair",[],"white_arm_chair.png",BASE_ITEM))
 pack.add(CustomModelCompoment("cutebear_furniture","trash_can",[],"trash_can.png",BASE_ITEM))
 pack.add(CustomModelCompoment("cutebear_furniture","toilet",[],"toilet.png",BASE_ITEM))
+
+# Wood, wool and concrete variants. Regenerate their Bedrock textures with
+# tools/generate_variant_textures.py after changing variants.py.
+for item, parent, substitutions in variants():
+    pack.add(VariantModelCompoment(namespace, item, parent, substitutions, BASE_ITEM))
 
 
 pack.run("../cutebear_furniture.zip")

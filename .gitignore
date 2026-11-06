@@ -8,3 +8,4 @@ cutebear_furniture.json
 *.mcpack
 tmp_be/
 tmp/
+__pycache__/
