@@ -6,6 +6,7 @@ import os
 import uuid
 from variant_component import VariantModelCompoment
 from variants import variants
+from pfm_component import PfmModelCompoment, pfm_items
 namespace="cutebear_furniture"
 
 info = {
@@ -61,6 +62,10 @@ pack.add(CustomModelCompoment("cutebear_furniture","toilet",[],"toilet.png",BASE
 # tools/generate_variant_textures.py after changing variants.py.
 for item, parent, substitutions in variants():
     pack.add(VariantModelCompoment(namespace, item, parent, substitutions, BASE_ITEM))
+
+# The rest of Paladin's furniture, imported with tools/import_pfm.py.
+for item in pfm_items():
+    pack.add(PfmModelCompoment(namespace, item, BASE_ITEM))
 
 
 pack.run("../cutebear_furniture.zip")

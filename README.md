@@ -2,7 +2,7 @@
 
 ## All models come from [paladins-furniture](https://github.com/UnlikePaladin/paladins-furniture)
 
-Fork of [cutebear/FurnitureResource](https://codeberg.org/cutebear/FurnitureResource) that adds wood, wool, concrete and gold variants for the [CutebearFurniture fork](https://github.com/lzlrd/CutebearFurniture).
+Fork of [cutebear/FurnitureResource](https://codeberg.org/cutebear/FurnitureResource) that adds wood, wool, concrete and gold variants and 85 more pieces from Paladin's Furniture for the [CutebearFurniture fork](https://github.com/lzlrd/CutebearFurniture).
 
 ## Build
 
@@ -28,3 +28,23 @@ python3 tools/generate_variant_textures.py [path/to/client.jar]
 ```
 
 Without a jar it downloads the latest release client jar from Mojang. Keep `variants.py` in sync with the recipes in the plugin.
+
+## Pieces from Paladin's Furniture
+
+`resources/pfm` holds sofas, chairs, kitchen appliances, lights, bathroom fittings and more, converted from Paladin's Furniture at commit 01ec5d7, the last before its assets left the LGPL (see [NOTICE.md](NOTICE.md)). `pfm_items.py` lists them: the Paladin model each comes from, its stonecutter inputs, and how the plugin places it.
+
+After changing `pfm_items.py`, check out that commit of [Paladin's Furniture](https://github.com/UnlikePaladin/paladins-furniture) and import again:
+
+```sh
+python3 -I tools/import_pfm.py path/to/paladins-furniture/common/src/main/resources/assets/pfm path/to/client.jar
+```
+
+It merges each Java model's parents, copies the Paladin textures it uses, bakes Bedrock geometry and a texture atlas, and writes `resources/pfm/furniture.json`. Copy that file to the plugin's `src/main/resources`: the plugin reads it for each piece's recipe, placement, seat, light and barriers.
+
+To check a build against the last release, with the release's three files and a client jar:
+
+```sh
+python3 -I tools/validate_packs.py cutebear_furniture.zip cutebear_furniture.mcpack cutebear_furniture.json path/to/client.jar release.zip release.mcpack release.json 219
+```
+
+The last argument is the number of items the build should have.
