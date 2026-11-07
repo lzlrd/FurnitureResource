@@ -1,8 +1,8 @@
-"""Wood, wool and concrete variants of the furniture.
+"""Wood, wool, concrete and gold variants of the furniture.
 
 Keep this list in sync with the recipes in the CutebearFurniture plugin.
-Existing item IDs (oak furniture, white_arm_chair, trash_can) stay unchanged
-so furniture that is already placed keeps working.
+Existing item IDs (oak furniture, white_arm_chair, trash_can, the quartz
+bathroom) stay unchanged so furniture that is already placed keeps working.
 """
 
 # Wood type: (planks texture, log texture).
@@ -31,6 +31,19 @@ WOODEN_FURNITURE = [
     "chair_modern",
     "chair_dinner",
 ]
+
+QUARTZ_FURNITURE = [
+    "bathtub",
+    "basic_sink",
+    "toilet",
+]
+
+# The quartz parts of the bathroom furniture become gold; fittings keep their texture.
+GOLD = {
+    "quartz_block_bottom": "gold_block",
+    "quartz_block_side": "gold_block",
+    "quartz_block_top": "gold_block",
+}
 
 COLOURS = [
     "white",
@@ -65,3 +78,5 @@ def variants():
     for colour in COLOURS:
         if colour != "gray":
             yield f"{colour}_trash_can", "trash_can", {"gray_concrete": f"{colour}_concrete"}
+    for base in QUARTZ_FURNITURE:
+        yield f"gold_{base}", base, GOLD
