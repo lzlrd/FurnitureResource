@@ -1,0 +1,16 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_cabinet_basic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_basalt_side",
+		"p0_legs": "minecraft:block/basalt_side",
+		"p0_particle": "minecraft:block/polished_basalt_side",
+		"p1_particle": "minecraft:block/polished_basalt_side",
+		"p1_legs": "minecraft:block/basalt_side",
+		"p2_particle": "minecraft:block/polished_basalt_side",
+		"p2_legs": "minecraft:block/basalt_side",
+		"p3_particle": "minecraft:block/polished_basalt_side",
+		"p3_legs": "minecraft:block/basalt_side",
+		"p4_particle": "minecraft:block/polished_basalt_side",
+		"p4_legs": "minecraft:block/basalt_side"
+	}
+}

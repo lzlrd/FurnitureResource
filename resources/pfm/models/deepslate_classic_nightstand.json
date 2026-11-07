@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/classic_nightstand",
+	"textures": {
+		"p0_base": "minecraft:block/polished_deepslate",
+		"p0_support": "minecraft:block/deepslate",
+		"p0_particle": "minecraft:block/deepslate"
+	}
+}

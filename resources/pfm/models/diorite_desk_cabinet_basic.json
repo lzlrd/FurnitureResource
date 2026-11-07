@@ -1,0 +1,16 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_cabinet_basic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_diorite",
+		"p0_legs": "minecraft:block/diorite",
+		"p0_particle": "minecraft:block/polished_diorite",
+		"p1_particle": "minecraft:block/polished_diorite",
+		"p1_legs": "minecraft:block/diorite",
+		"p2_particle": "minecraft:block/polished_diorite",
+		"p2_legs": "minecraft:block/diorite",
+		"p3_particle": "minecraft:block/polished_diorite",
+		"p3_legs": "minecraft:block/diorite",
+		"p4_particle": "minecraft:block/polished_diorite",
+		"p4_legs": "minecraft:block/diorite"
+	}
+}

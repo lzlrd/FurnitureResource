@@ -1,0 +1,15 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_basic",
+	"textures": {
+		"p0_base": "minecraft:block/quartz_block_side",
+		"p0_particle": "minecraft:block/quartz_block_side",
+		"p1_particle": "minecraft:block/quartz_block_side",
+		"p1_legs": "minecraft:block/stripped_dark_oak_log",
+		"p2_particle": "minecraft:block/quartz_block_side",
+		"p2_legs": "minecraft:block/stripped_dark_oak_log",
+		"p3_particle": "minecraft:block/quartz_block_side",
+		"p3_legs": "minecraft:block/stripped_dark_oak_log",
+		"p4_particle": "minecraft:block/quartz_block_side",
+		"p4_legs": "minecraft:block/stripped_dark_oak_log"
+	}
+}

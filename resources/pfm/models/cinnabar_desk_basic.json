@@ -1,0 +1,15 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_basic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_cinnabar",
+		"p0_particle": "minecraft:block/polished_cinnabar",
+		"p1_particle": "minecraft:block/polished_cinnabar",
+		"p1_legs": "minecraft:block/cinnabar",
+		"p2_particle": "minecraft:block/polished_cinnabar",
+		"p2_legs": "minecraft:block/cinnabar",
+		"p3_particle": "minecraft:block/polished_cinnabar",
+		"p3_legs": "minecraft:block/cinnabar",
+		"p4_particle": "minecraft:block/polished_cinnabar",
+		"p4_legs": "minecraft:block/cinnabar"
+	}
+}

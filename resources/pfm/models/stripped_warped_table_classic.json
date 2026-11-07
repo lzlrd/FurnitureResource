@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/table_classic",
+	"textures": {
+		"p0_base": "minecraft:block/stripped_warped_stem",
+		"p0_particle": "minecraft:block/stripped_warped_stem",
+		"p0_legs": "minecraft:block/warped_planks"
+	}
+}

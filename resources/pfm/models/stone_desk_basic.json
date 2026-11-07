@@ -1,0 +1,15 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_basic",
+	"textures": {
+		"p0_base": "minecraft:block/stone",
+		"p0_particle": "minecraft:block/stone",
+		"p1_particle": "minecraft:block/stone",
+		"p1_legs": "minecraft:block/cobblestone",
+		"p2_particle": "minecraft:block/stone",
+		"p2_legs": "minecraft:block/cobblestone",
+		"p3_particle": "minecraft:block/stone",
+		"p3_legs": "minecraft:block/cobblestone",
+		"p4_particle": "minecraft:block/stone",
+		"p4_legs": "minecraft:block/cobblestone"
+	}
+}

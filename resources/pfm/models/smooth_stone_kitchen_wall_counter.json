@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/kitchen_wall_counter",
+	"textures": {
+		"p0_base": "minecraft:block/white_concrete",
+		"p0_particle": "minecraft:block/white_concrete"
+	}
+}

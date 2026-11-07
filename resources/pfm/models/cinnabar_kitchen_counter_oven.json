@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/kitchen_counter_oven",
+	"textures": {
+		"p0_base": "minecraft:block/polished_cinnabar",
+		"p0_legs": "minecraft:block/cinnabar",
+		"p0_particle": "minecraft:block/polished_cinnabar"
+	}
+}

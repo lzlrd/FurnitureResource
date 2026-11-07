@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/chair_dinner",
+	"textures": {
+		"p0_base": "minecraft:block/stone",
+		"p0_legs": "minecraft:block/cobblestone",
+		"p0_particle": "minecraft:block/stone"
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/kitchen_wall_counter",
+	"textures": {
+		"p0_base": "minecraft:block/ancient_debris_side",
+		"p0_particle": "minecraft:block/ancient_debris_side"
+	}
+}

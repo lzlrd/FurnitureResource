@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/simple_stool",
+	"textures": {
+		"p0_base": "minecraft:block/polished_blackstone",
+		"p0_particle": "minecraft:block/polished_blackstone",
+		"p0_legs": "minecraft:block/blackstone"
+	}
+}

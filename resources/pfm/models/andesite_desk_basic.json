@@ -1,0 +1,15 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_basic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_andesite",
+		"p0_particle": "minecraft:block/polished_andesite",
+		"p1_particle": "minecraft:block/polished_andesite",
+		"p1_legs": "minecraft:block/andesite",
+		"p2_particle": "minecraft:block/polished_andesite",
+		"p2_legs": "minecraft:block/andesite",
+		"p3_particle": "minecraft:block/polished_andesite",
+		"p3_legs": "minecraft:block/andesite",
+		"p4_particle": "minecraft:block/polished_andesite",
+		"p4_legs": "minecraft:block/andesite"
+	}
+}

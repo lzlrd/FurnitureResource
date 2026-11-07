@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/chair_dinner",
+	"textures": {
+		"p0_base": "minecraft:block/polished_granite",
+		"p0_legs": "minecraft:block/granite",
+		"p0_particle": "minecraft:block/polished_granite"
+	}
+}

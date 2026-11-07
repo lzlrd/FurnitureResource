@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/chair_classic",
+	"textures": {
+		"p0_base": "minecraft:block/netherite_block",
+		"p0_legs": "minecraft:block/ancient_debris_side",
+		"p0_particle": "minecraft:block/netherite_block"
+	}
+}

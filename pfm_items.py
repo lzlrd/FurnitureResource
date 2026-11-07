@@ -228,6 +228,127 @@ WOODEN = [
 ]
 
 
+# Cutebear's own wooden pieces, which are Paladin's models: the plugin already makes them in each wood, so these
+# families only add their stripped and stone versions. Their names follow the plugin's.
+ORIGINAL = [
+    ("chair", "{wood} Chair", ["chair/chair"], {"seat": True}),
+    ("chair_dinner", "{wood} Dinner Chair", ["chair_dinner/chair_dinner"], {"seat": True}),
+    ("chair_classic", "{wood} Classic Chair", ["chair_classic/chair_classic"], {"seat": True}),
+    ("chair_modern", "{wood} Modern Chair", ["chair_modern/chair_modern"], {"seat": True}),
+    ("dinner_table", "{wood} Dinner Table", ["dinner_table/dinner_table"], {}),
+    ("coffee_table_basic", "{wood} Coffee Table", ["coffee_table_basic/coffee_table_basic"], {}),
+    ("classic_desk_all", "{wood} Classic Desk", ["classic_desk/classic_desk_all"], {}),
+    ("classic_stool", "{wood} Classic Stool", ["classic_stool/classic_stool"], {"seat": True}),
+]
+
+# Wooden families Paladin makes only from logs.
+LOG_ONLY = ("log_stool", "simple_bunk_ladder")
+
+# Paladin's stone types: name, polished block and raw block. The polished block's texture takes the planks' place and
+# the raw block's the logs', and pieces are cut from the polished block. Paladin finds one for every polished block
+# that has a raw block, which on 26.3 includes cinnabar and sulfur, and adds calcite, quartz, netherite and the
+# quartz-topped light and dark woods by hand.
+STONES = {
+    "stone": ("Stone", "stone", "cobblestone"),
+    "granite": ("Granite", "polished_granite", "granite"),
+    "diorite": ("Diorite", "polished_diorite", "diorite"),
+    "andesite": ("Andesite", "polished_andesite", "andesite"),
+    "deepslate": ("Deepslate", "polished_deepslate", "deepslate"),
+    "blackstone": ("Blackstone", "polished_blackstone", "blackstone"),
+    "basalt": ("Basalt", "polished_basalt", "basalt"),
+    "tuff": ("Tuff", "polished_tuff", "tuff"),
+    "cinnabar": ("Cinnabar", "polished_cinnabar", "cinnabar"),
+    "sulfur": ("Sulfur", "polished_sulfur", "sulfur"),
+    "calcite": ("Calcite", "calcite", "stripped_warped_stem"),
+    "light_wood": ("Light Wood", "quartz_block", "stripped_oak_log"),
+    "dark_wood": ("Dark Wood", "quartz_block", "stripped_dark_oak_log"),
+    "quartz": ("Quartz", "quartz_block", "quartz_block"),
+    "netherite": ("Netherite", "netherite_block", "ancient_debris"),
+}
+
+# Paladin's two-material kitchens and modern stools: name, the block whose texture takes the planks' place, the one
+# that takes the logs' place, and the block a piece is cut from. Paladin's raw concrete fills the gaps it leaves.
+COUNTERS = {
+    "dark_concrete": ("Dark Concrete", "gray_concrete", "white_concrete", "gray_concrete"),
+    "concrete": ("Concrete", "white_concrete", None, "white_concrete"),
+    "smooth_stone": ("Smooth Stone", "white_concrete", "smooth_stone", "smooth_stone"),
+    "deepslate_tile": ("Deepslate Tile", "quartz_block", "deepslate_tiles", "deepslate_tiles"),
+    "granite_terracotta": ("Granite Terracotta", "white_terracotta", "polished_granite", "white_terracotta"),
+    "andesite_oak": ("Andesite Stripped Oak", "stripped_oak_log", "polished_andesite", "polished_andesite"),
+    "deepslate_dark_oak": ("Deepslate Dark Oak", "dark_oak_planks", "polished_deepslate", "polished_deepslate"),
+    "blackstone_crimson": ("Blackstone Crimson", "crimson_planks", "polished_blackstone", "polished_blackstone"),
+}
+STOOLS = {
+    "gray_dark_oak": ("Gray Dark Oak", "gray_concrete", "stripped_dark_oak_log", "gray_concrete"),
+    "white": ("White", "white_concrete", "light_gray_concrete", "white_concrete"),
+    "gray": ("Gray", None, "light_gray_concrete", "gray_concrete"),
+    "light_gray_dark_oak": ("Light Gray Dark Oak", "light_gray_concrete", "stripped_dark_oak_log",
+                            "light_gray_concrete"),
+}
+
+# Paladin takes the texture a block shows on its north side.
+SIDES = {"quartz_block": "quartz_block_side", "basalt": "basalt_side", "polished_basalt": "polished_basalt_side",
+         "ancient_debris": "ancient_debris_side"}
+
+
+def side(name: str | None) -> str:
+    return "pfm:block/raw_concrete" if name is None else block(SIDES.get(name, name))
+
+
+def materials(planks: str, log: str) -> dict:
+    return {block("oak_planks"): planks, block("oak_log"): log}
+
+
+def stripped(wood: str) -> dict:
+    """Paladin's stripped pieces put the stripped log where the planks were and the planks where the log was."""
+    _, planks, _, _, stripped_log, _, _ = WOODS[wood]
+    return materials(block(stripped_log), block(planks))
+
+
+def raw(wood: str, strip: bool) -> dict:
+    """The raw log table is all log, stripped or not."""
+    log = block(WOODS[wood][4 if strip else 2])
+    return materials(log, log)
+
+
+def stone(name: str, kitchen: bool) -> dict:
+    _, polished, raw_block = STONES[name]
+    top, bottom = side(polished), side(raw_block)
+    if kitchen and name in ("calcite", "netherite"):
+        # Paladin's kitchens swap these two, so the raw block forms the cabinet.
+        top, bottom = bottom, top
+    return materials(top, bottom)
+
+
+def stripped_inputs(wood: str) -> list:
+    log = WOODS[wood][4]
+    return [log, log.replace("_log", "_wood").replace("_stem", "_hyphae")]
+
+
+def other_materials(family: str, name: str, models: list, options: dict):
+    """A wooden family's stripped and stone versions, and Paladin's two-material kitchens and stools."""
+    kitchen = family.startswith("kitchen_")
+    for wood, (wood_name, _, _, _, _, _, log) in WOODS.items():
+        yield variant(f"stripped_{wood}_{family}", name.format(wood=f"Stripped {wood_name}", log=log), family, models,
+                      stripped(wood), stripped_inputs(wood), **options)
+    if family == "log_table":
+        for wood, (wood_name, _, _, _, _, tag, log) in WOODS.items():
+            yield variant(f"{wood}_raw_log_table", f"Raw {wood_name} {log} Table", family, models, raw(wood, False),
+                          [f"#{tag}"], **options)
+            yield variant(f"stripped_{wood}_raw_log_table", f"Raw Stripped {wood_name} {log} Table", family, models,
+                          raw(wood, True), stripped_inputs(wood), **options)
+    for key, (stone_name, polished, _) in STONES.items():
+        if kitchen and key == "quartz":
+            continue  # Paladin makes no quartz kitchens: Deepslate Tile is its quartz counter.
+        id = f"{key}_natural_table" if family == "log_table" else f"{key}_{family}"
+        yield variant(id, name.format(wood=stone_name, log="Natural"), family, models, stone(key, kitchen), [polished],
+                      **options)
+    extras = COUNTERS if kitchen else STOOLS if family == "modern_stool" else {}
+    for key, (extra_name, planks, log, cut_from) in extras.items():
+        yield variant(f"{key}_{family}", name.format(wood=extra_name, log=""), family, models,
+                      materials(side(planks), side(log)), [cut_from], **options)
+
+
 def family_items():
     """Paladin's furniture that comes in each wood, and in each colour: the pieces whose looks share a template."""
     for family, name, parts, swap, options in WOODEN:
@@ -235,6 +356,10 @@ def family_items():
         for wood, (wood_name, _, _, _, _, tag, log) in WOODS.items():
             yield variant(f"{wood}_{family}", name.format(wood=wood_name, log=log), family, models, swap(wood),
                           [f"#{tag}"], **options)
+        if family not in LOG_ONLY:
+            yield from other_materials(family, name, models, options)
+    for family, name, parts, options in ORIGINAL:
+        yield from other_materials(family, name, [f"pfm:block/{part}" for part in parts], options)
     for style in ("simple", "classic"):
         parts = [f"pfm:block/{style}_bed/template/full/{style}_bed", MATTRESS]
         for wood, (wood_name, *_) in WOODS.items():

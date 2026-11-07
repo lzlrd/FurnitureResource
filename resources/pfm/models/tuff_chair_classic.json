@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/chair_classic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_tuff",
+		"p0_legs": "minecraft:block/tuff",
+		"p0_particle": "minecraft:block/polished_tuff"
+	}
+}

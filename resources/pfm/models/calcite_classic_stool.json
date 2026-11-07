@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/classic_stool",
+	"textures": {
+		"p0_base": "minecraft:block/calcite",
+		"p0_legs": "minecraft:block/stripped_warped_stem",
+		"p0_particle": "minecraft:block/calcite"
+	}
+}

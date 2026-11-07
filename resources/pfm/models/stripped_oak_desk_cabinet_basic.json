@@ -1,0 +1,16 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_cabinet_basic",
+	"textures": {
+		"p0_base": "minecraft:block/stripped_oak_log",
+		"p0_legs": "minecraft:block/oak_planks",
+		"p0_particle": "minecraft:block/stripped_oak_log",
+		"p1_particle": "minecraft:block/stripped_oak_log",
+		"p1_legs": "minecraft:block/oak_planks",
+		"p2_particle": "minecraft:block/stripped_oak_log",
+		"p2_legs": "minecraft:block/oak_planks",
+		"p3_particle": "minecraft:block/stripped_oak_log",
+		"p3_legs": "minecraft:block/oak_planks",
+		"p4_particle": "minecraft:block/stripped_oak_log",
+		"p4_legs": "minecraft:block/oak_planks"
+	}
+}

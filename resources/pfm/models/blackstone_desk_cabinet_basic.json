@@ -1,0 +1,16 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_cabinet_basic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_blackstone",
+		"p0_legs": "minecraft:block/blackstone",
+		"p0_particle": "minecraft:block/polished_blackstone",
+		"p1_particle": "minecraft:block/polished_blackstone",
+		"p1_legs": "minecraft:block/blackstone",
+		"p2_particle": "minecraft:block/polished_blackstone",
+		"p2_legs": "minecraft:block/blackstone",
+		"p3_particle": "minecraft:block/polished_blackstone",
+		"p3_legs": "minecraft:block/blackstone",
+		"p4_particle": "minecraft:block/polished_blackstone",
+		"p4_legs": "minecraft:block/blackstone"
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_cabinet_basic",
+	"textures": {
+		"p0_base": "minecraft:block/netherite_block",
+		"p0_legs": "minecraft:block/ancient_debris_side",
+		"p0_particle": "minecraft:block/netherite_block",
+		"p1_particle": "minecraft:block/netherite_block",
+		"p1_legs": "minecraft:block/ancient_debris_side",
+		"p2_particle": "minecraft:block/netherite_block",
+		"p2_legs": "minecraft:block/ancient_debris_side",
+		"p3_particle": "minecraft:block/netherite_block",
+		"p3_legs": "minecraft:block/ancient_debris_side",
+		"p4_particle": "minecraft:block/netherite_block",
+		"p4_legs": "minecraft:block/ancient_debris_side"
+	}
+}

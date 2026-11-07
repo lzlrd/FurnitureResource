@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/kitchen_wall_counter",
+	"textures": {
+		"p0_base": "minecraft:block/polished_diorite",
+		"p0_particle": "minecraft:block/polished_diorite"
+	}
+}

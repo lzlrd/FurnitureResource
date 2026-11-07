@@ -1,0 +1,16 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_cabinet_basic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_granite",
+		"p0_legs": "minecraft:block/granite",
+		"p0_particle": "minecraft:block/polished_granite",
+		"p1_particle": "minecraft:block/polished_granite",
+		"p1_legs": "minecraft:block/granite",
+		"p2_particle": "minecraft:block/polished_granite",
+		"p2_legs": "minecraft:block/granite",
+		"p3_particle": "minecraft:block/polished_granite",
+		"p3_legs": "minecraft:block/granite",
+		"p4_particle": "minecraft:block/polished_granite",
+		"p4_legs": "minecraft:block/granite"
+	}
+}

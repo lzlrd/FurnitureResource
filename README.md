@@ -2,7 +2,7 @@
 
 ## All models come from [paladins-furniture](https://github.com/UnlikePaladin/paladins-furniture)
 
-Fork of [cutebear/FurnitureResource](https://codeberg.org/cutebear/FurnitureResource) that adds wood, wool, concrete and gold variants and 941 more pieces from Paladin's Furniture for the [CutebearFurniture fork](https://github.com/lzlrd/CutebearFurniture).
+Fork of [cutebear/FurnitureResource](https://codeberg.org/cutebear/FurnitureResource) that adds wood, wool, concrete and gold variants and 1,781 more pieces from Paladin's Furniture for the [CutebearFurniture fork](https://github.com/lzlrd/CutebearFurniture).
 
 ## Build
 
@@ -34,6 +34,8 @@ Without a jar it downloads the latest release client jar from Mojang. Keep `vari
 `resources/pfm` holds sofas, chairs, tables, desks, stools, kitchens, beds, lamps, lights, bathroom fittings and more, converted from Paladin's Furniture at commit 01ec5d7, the last before its assets left the LGPL (see [NOTICE.md](NOTICE.md)). `pfm_items.py` lists them: the Paladin model each comes from, its stonecutter inputs, and how the plugin places it.
 
 The pieces that come in each wood, and the beds, lamps and office chairs that come in each colour, are families: one template model, put together from Paladin's parts for a free-standing piece, retextured for each variant as Paladin does at run time. Java gets the template in `models/pfm/` and a small model per piece that swaps its textures; Bedrock gets one geometry per family and an atlas per piece. Lamp shades and office chairs are tinted with the dye's colour. Minecraft 26.1 split the bed entity texture Paladin's mattresses used into one texture per face of the bed block, so `pfm_items.py` rebuilds the mattress on those.
+
+Like Paladin's, the wooden families also come stripped, in stone and in Paladin's two-material kitchens and modern stools, with the materials swapped the way its renderer swaps them: a stripped piece puts the stripped log where the planks were and the planks where the log was, a stone piece takes the polished block's texture for the planks and the raw block's for the log, and the raw log table is log all over. Paladin finds a stone type for every polished block that has a raw block, so on 26.3 that includes cinnabar and sulfur. The plugin's own chairs, dinner table, coffee table, classic desk and classic stool are Paladin's models, so they get stripped and stone versions too.
 
 After changing `pfm_items.py`, check out that commit of [Paladin's Furniture](https://github.com/UnlikePaladin/paladins-furniture) and import again:
 

@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/coffee_table_classic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_basalt_side",
+		"p0_legs": "minecraft:block/basalt_side",
+		"p0_particle": "minecraft:block/polished_basalt_side"
+	}
+}

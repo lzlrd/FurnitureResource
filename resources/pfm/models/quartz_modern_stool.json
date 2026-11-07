@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/modern_stool",
+	"textures": {
+		"p0_base": "minecraft:block/quartz_block_side",
+		"p0_particle": "minecraft:block/quartz_block_side",
+		"p0_legs": "minecraft:block/quartz_block_side"
+	}
+}

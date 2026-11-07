@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/coffee_table_classic",
+	"textures": {
+		"p0_base": "minecraft:block/polished_sulfur",
+		"p0_legs": "minecraft:block/sulfur",
+		"p0_particle": "minecraft:block/polished_sulfur"
+	}
+}

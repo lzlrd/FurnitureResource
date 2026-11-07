@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/log_table",
+	"textures": {
+		"p0_base": "minecraft:block/oak_log",
+		"p0_particle": "minecraft:block/oak_log"
+	}
+}

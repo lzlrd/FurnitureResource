@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/modern_stool",
+	"textures": {
+		"p0_base": "cutebear_furniture:block/pfm/raw_concrete",
+		"p0_particle": "cutebear_furniture:block/pfm/raw_concrete",
+		"p0_legs": "minecraft:block/light_gray_concrete"
+	}
+}
