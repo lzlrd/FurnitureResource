@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/log_stool",
+	"textures": {
+		"p0_top": "minecraft:block/warped_stem_top",
+		"p0_side": "minecraft:block/warped_stem",
+		"p0_particle": "minecraft:block/warped_stem"
+	}
+}

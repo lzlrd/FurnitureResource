@@ -29,6 +29,7 @@ class Sources:
         self.pfm = Path(pfm_assets)
         self.jar = zipfile.ZipFile(client_jar)
         self.images = {}
+        self.generated = {}
 
     def model(self, reference: str) -> dict:
         namespace, path = split(reference)
@@ -37,12 +38,18 @@ class Sources:
         return json.loads(self.jar.read(f"assets/minecraft/models/{path}.json"))
 
     def texture_bytes(self, reference: str) -> bytes:
+        if reference in self.generated:
+            buffer = io.BytesIO()
+            self.generated[reference].save(buffer, "PNG", optimize=True)
+            return buffer.getvalue()
         namespace, path = split(reference)
         if namespace == "pfm":
             return (self.pfm / "textures" / f"{path}.png").read_bytes()
         return self.jar.read(f"assets/minecraft/textures/{path}.png")
 
     def image(self, reference: str) -> Image.Image:
+        if reference in self.generated:
+            return self.generated[reference]
         if reference not in self.images:
             image = Image.open(io.BytesIO(self.texture_bytes(reference))).convert("RGBA")
             if image.height > image.width:
@@ -50,6 +57,18 @@ class Sources:
                 image = image.crop((0, 0, image.width, image.width))
             self.images[reference] = image
         return self.images[reference]
+
+    def tinted(self, reference: str, colour: int, name: str) -> str:
+        """The texture multiplied by a colour, as Minecraft tints a face, kept as a texture of this pack."""
+        path = f"{split(reference)[1]}_{name}"
+        generated = f"gen:{path}"
+        if generated not in self.generated:
+            red, green, blue, alpha = self.image(reference).split()
+            factors = (colour >> 16 & 255, colour >> 8 & 255, colour & 255)
+            channels = [channel.point(lambda value, factor=factor: value * factor // 255)
+                        for channel, factor in zip((red, green, blue), factors)]
+            self.generated[generated] = Image.merge("RGBA", (*channels, alpha))
+        return generated
 
 
 def flatten(sources: Sources, reference: str, textures: dict | None = None) -> dict:
@@ -73,6 +92,40 @@ def flatten(sources: Sources, reference: str, textures: dict | None = None) -> d
     return merged
 
 
+def compose(sources: Sources, parts: list) -> dict:
+    """Several models as one, each part's texture keys prefixed with its index so parts can't clash. A part is a
+    model reference or a model with elements and textures of its own. The first part's display is kept."""
+    merged = {"textures": {}, "display": {}, "elements": []}
+    for index, part in enumerate(parts):
+        model = flatten(sources, part) if isinstance(part, str) else part
+        prefix = f"p{index}_"
+        for key, value in model["textures"].items():
+            merged["textures"][prefix + key] = "#" + prefix + value[1:] if value.startswith("#") else value
+        if index == 0:
+            merged["display"] = dict(model.get("display", {}))
+        for element in model["elements"]:
+            element = json.loads(json.dumps(element))
+            for data in element.get("faces", {}).values():
+                if data.get("texture", "").startswith("#"):
+                    data["texture"] = "#" + prefix + data["texture"][1:]
+            merged["elements"].append(element)
+    return merged
+
+
+def retexture(sources: Sources, model: dict, substitutions: dict) -> dict:
+    """The model with textures swapped. substitutions maps a texture as resolve() gives it to its replacement, or to
+    ("tint", colour, name) for a tinted copy."""
+    textures = {}
+    for key, value in model["textures"].items():
+        concrete = resolve(model["textures"], f"#{key}")
+        replacement = substitutions.get(concrete)
+        if isinstance(replacement, tuple):
+            _, colour, name = replacement
+            replacement = sources.tinted(concrete, colour, name)
+        textures[key] = replacement or value
+    return {**model, "textures": textures}
+
+
 def resolve(textures: dict, reference: str | None) -> str | None:
     seen = set()
     while reference and reference.startswith("#"):
@@ -90,7 +143,7 @@ def resolve(textures: dict, reference: str | None) -> str | None:
 def pack_texture(reference: str) -> str:
     """Where a texture lives for Java: vanilla ones stay, Paladin's move into this pack."""
     namespace, path = split(reference)
-    if namespace == "pfm":
+    if namespace in ("pfm", "gen"):
         return f"{NAMESPACE}:block/pfm/{path.removeprefix('block/')}"
     return f"minecraft:{path}"
 
@@ -103,7 +156,7 @@ def java_model(model: dict) -> tuple:
         if concrete is None:
             continue
         textures[key] = pack_texture(concrete)
-        if concrete.startswith("pfm:"):
+        if concrete.startswith(("pfm:", "gen:")):
             needed.add(concrete)
     elements = []
     for element in model["elements"]:
@@ -149,11 +202,12 @@ def face_image(texture: Image.Image, uv: list, rotation: int) -> Image.Image:
     return region
 
 
-def pack_regions(images: list) -> tuple:
-    """Shelf-pack images into the smallest power-of-two atlas found. Identical images share a place."""
+def pack_regions(images: list, keys: list | None = None) -> tuple:
+    """Shelf-pack images into the smallest power-of-two atlas found. Identical images, or images with equal keys when
+    keys are given, share a place."""
     unique, index = {}, []
-    for image in images:
-        key = (image.size, image.tobytes())
+    for number_, image in enumerate(images):
+        key = (image.size, keys[number_] if keys else image.tobytes())
         if key not in unique:
             unique[key] = image
         index.append(key)
@@ -204,20 +258,24 @@ def cube(element: dict) -> dict:
     return result
 
 
-def bake(sources: Sources, model: dict, identifier: str) -> tuple:
-    """Bedrock geometry and its atlas for a flattened model."""
+def faces_of(model: dict) -> list:
+    """Each face the model shows: its element's index, its side, and its texture, uv and rotation."""
     faces = []
     for number_, element in enumerate(model["elements"]):
         for face, data in element.get("faces", {}).items():
             texture = resolve(model["textures"], data.get("texture"))
             if texture is None:
                 continue
-            uv = data.get("uv") or default_uv(element, face)
-            faces.append((number_, face, face_image(sources.image(texture), uv, data.get("rotation", 0))))
-    atlas, places = pack_regions([image for _, _, image in faces])
+            uv = tuple(data.get("uv") or default_uv(element, face))
+            faces.append((number_, face, texture, uv, data.get("rotation", 0)))
+    return faces
+
+
+def geometry_for(model: dict, identifier: str, size: tuple, placed: list) -> dict:
+    """Bedrock geometry for a flattened model whose faces sit in an atlas of this size: placed holds each face's
+    element index, side, place in the atlas and size there."""
     cubes = [cube(element) for element in model["elements"]]
-    for (number_, face, image), (x, y) in zip(faces, places):
-        w, h = image.size
+    for number_, face, (x, y), (w, h) in placed:
         if face in ("up", "down"):
             uv = {"uv": [x + w, y + h], "uv_size": [-w, -h]}
         else:
@@ -227,13 +285,13 @@ def bake(sources: Sources, model: dict, identifier: str) -> tuple:
     low = [min(c["origin"][i] for c in cubes) for i in range(3)]
     high = [max(c["origin"][i] + c["size"][i] for c in cubes) for i in range(3)]
     reach = max(abs(low[0]), abs(high[0]), abs(low[2]), abs(high[2]))
-    geometry = {
+    return {
         "format_version": "1.12.0",
         "minecraft:geometry": [{
             "description": {
                 "identifier": f"geometry.{identifier}",
-                "texture_width": atlas.width,
-                "texture_height": atlas.height,
+                "texture_width": size[0],
+                "texture_height": size[1],
                 "visible_bounds_width": number(max(2, 2 * reach / 16 + 1)),
                 "visible_bounds_height": number(max(2, (high[1] - min(low[1], 0)) / 16 + 1)),
                 "visible_bounds_offset": [0, number((high[1] + low[1]) / 32), 0],
@@ -241,4 +299,31 @@ def bake(sources: Sources, model: dict, identifier: str) -> tuple:
             "bones": [{"name": identifier, "pivot": [8, 0, -8], "cubes": cubes}],
         }],
     }
-    return geometry, atlas
+
+
+def bake(sources: Sources, model: dict, identifier: str) -> tuple:
+    """Bedrock geometry and its atlas for a flattened model."""
+    faces = faces_of(model)
+    images = [face_image(sources.image(texture), uv, rotation) for _, _, texture, uv, rotation in faces]
+    atlas, places = pack_regions(images)
+    placed = [(number_, face, place, image.size) for (number_, face, *_), place, image in zip(faces, places, images)]
+    return geometry_for(model, identifier, atlas.size, placed), atlas
+
+
+def bake_family(sources: Sources, template: dict, variants: dict, identifier: str) -> tuple:
+    """One Bedrock geometry for a family's template, and an atlas in its layout for each retextured variant. Faces
+    share a place by their template texture, uv and rotation, so the layout fits every variant."""
+    faces = faces_of(template)
+    images = [face_image(sources.image(texture), uv, rotation) for _, _, texture, uv, rotation in faces]
+    atlas, places = pack_regions(images, [(texture, uv, rotation) for _, _, texture, uv, rotation in faces])
+    placed = [(number_, face, place, image.size) for (number_, face, *_), place, image in zip(faces, places, images)]
+    atlases = {}
+    for name, model in variants.items():
+        canvas = Image.new("RGBA", atlas.size, (0, 0, 0, 0))
+        for (_, _, texture, uv, rotation), place, image in zip(faces_of(model), places, images):
+            region = face_image(sources.image(texture), uv, rotation)
+            if region.size != image.size:
+                region = region.resize(image.size, Image.Resampling.NEAREST)
+            canvas.paste(region, place)
+        atlases[name] = canvas
+    return geometry_for(template, identifier, atlas.size, placed), atlases

@@ -1,0 +1,179 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.pfm_kitchen_wall_counter",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2,
+				"visible_bounds_offset": [
+					0,
+					0.5,
+					0
+				]
+			},
+			"bones": [
+				{
+					"name": "pfm_kitchen_wall_counter",
+					"pivot": [
+						8,
+						0,
+						-8
+					],
+					"cubes": [
+						{
+							"origin": [
+								-8,
+								1,
+								-8
+							],
+							"size": [
+								16,
+								15,
+								13
+							],
+							"uv": {
+								"north": {
+									"uv": [
+										0,
+										0
+									],
+									"uv_size": [
+										16,
+										15
+									]
+								},
+								"east": {
+									"uv": [
+										16,
+										0
+									],
+									"uv_size": [
+										13,
+										15
+									]
+								},
+								"south": {
+									"uv": [
+										0,
+										0
+									],
+									"uv_size": [
+										16,
+										15
+									]
+								},
+								"west": {
+									"uv": [
+										16,
+										0
+									],
+									"uv_size": [
+										13,
+										15
+									]
+								},
+								"up": {
+									"uv": [
+										16,
+										28
+									],
+									"uv_size": [
+										-16,
+										-13
+									]
+								},
+								"down": {
+									"uv": [
+										16,
+										28
+									],
+									"uv_size": [
+										-16,
+										-13
+									]
+								}
+							}
+						},
+						{
+							"origin": [
+								-8,
+								0,
+								-8
+							],
+							"size": [
+								16,
+								1,
+								13
+							],
+							"uv": {
+								"north": {
+									"uv": [
+										16,
+										15
+									],
+									"uv_size": [
+										16,
+										1
+									]
+								},
+								"east": {
+									"uv": [
+										0,
+										28
+									],
+									"uv_size": [
+										13,
+										1
+									]
+								},
+								"south": {
+									"uv": [
+										16,
+										15
+									],
+									"uv_size": [
+										16,
+										1
+									]
+								},
+								"west": {
+									"uv": [
+										0,
+										28
+									],
+									"uv_size": [
+										13,
+										1
+									]
+								},
+								"up": {
+									"uv": [
+										16,
+										28
+									],
+									"uv_size": [
+										-16,
+										-13
+									]
+								},
+								"down": {
+									"uv": [
+										16,
+										28
+									],
+									"uv_size": [
+										-16,
+										-13
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

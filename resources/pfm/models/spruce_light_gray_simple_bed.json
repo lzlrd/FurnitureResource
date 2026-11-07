@@ -1,0 +1,14 @@
+{
+	"parent": "cutebear_furniture:pfm/simple_bed",
+	"textures": {
+		"p0_0": "minecraft:block/spruce_planks",
+		"p0_particle": "minecraft:block/spruce_planks",
+		"p1_head_up": "minecraft:block/light_gray_bed_head_up",
+		"p1_foot_up": "minecraft:block/light_gray_bed_foot_up",
+		"p1_head_east": "minecraft:block/light_gray_bed_head_east",
+		"p1_head_west": "minecraft:block/light_gray_bed_head_west",
+		"p1_foot_east": "minecraft:block/light_gray_bed_foot_east",
+		"p1_foot_west": "minecraft:block/light_gray_bed_foot_west",
+		"p1_foot_south": "minecraft:block/light_gray_bed_foot_south"
+	}
+}

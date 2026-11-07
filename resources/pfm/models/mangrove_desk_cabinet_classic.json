@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/desk_cabinet_classic",
+	"textures": {
+		"p0_base": "minecraft:block/mangrove_planks",
+		"p0_legs": "minecraft:block/mangrove_log",
+		"p0_particle": "minecraft:block/mangrove_planks"
+	}
+}

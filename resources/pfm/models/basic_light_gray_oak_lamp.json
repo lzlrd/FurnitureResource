@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/basic_lamp",
+	"textures": {
+		"p1_shade": "cutebear_furniture:block/pfm/lamp_shade_light_gray",
+		"p1_particle": "cutebear_furniture:block/pfm/lamp_shade_light_gray"
+	}
+}

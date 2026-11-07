@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/kitchen_wall_counter",
+	"textures": {
+		"p0_base": "minecraft:block/warped_planks",
+		"p0_particle": "minecraft:block/warped_planks"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"parent": "cutebear_furniture:pfm/basic_lamp",
+	"textures": {
+		"p0_texture": "minecraft:block/stripped_jungle_log",
+		"p0_particle": "minecraft:block/stripped_jungle_log",
+		"p1_shade": "cutebear_furniture:block/pfm/lamp_shade_white",
+		"p1_particle": "cutebear_furniture:block/pfm/lamp_shade_white"
+	}
+}

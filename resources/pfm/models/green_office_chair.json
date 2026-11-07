@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/office_chair",
+	"textures": {
+		"p0_3": "cutebear_furniture:block/pfm/office_chair/office_chair_seat_green",
+		"p0_4": "cutebear_furniture:block/pfm/office_chair/office_chair_back_green"
+	}
+}

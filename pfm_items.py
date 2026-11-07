@@ -81,3 +81,176 @@ def items():
                90, solid=False)
     yield item("mesh_trashcan", "Mesh Trashcan", "pfm:block/mesh_trashcan", ["iron_bars"], angle=270)
     yield item("working_table", "Furniture Workbench", "pfm:block/working_table", ["crafting_table"], angle=270)
+
+
+# The woods the first pieces come in: name, planks, log, its top, stripped log, the item tag of its logs, and what
+# Paladin calls a log of it. Stems stand in for logs in the nether woods.
+WOODS = {
+    "oak": ("Oak", "oak_planks", "oak_log", "oak_log_top", "stripped_oak_log", "oak_logs", "Log"),
+    "spruce": ("Spruce", "spruce_planks", "spruce_log", "spruce_log_top", "stripped_spruce_log", "spruce_logs", "Log"),
+    "birch": ("Birch", "birch_planks", "birch_log", "birch_log_top", "stripped_birch_log", "birch_logs", "Log"),
+    "jungle": ("Jungle", "jungle_planks", "jungle_log", "jungle_log_top", "stripped_jungle_log", "jungle_logs", "Log"),
+    "acacia": ("Acacia", "acacia_planks", "acacia_log", "acacia_log_top", "stripped_acacia_log", "acacia_logs", "Log"),
+    "dark_oak": ("Dark Oak", "dark_oak_planks", "dark_oak_log", "dark_oak_log_top", "stripped_dark_oak_log",
+                 "dark_oak_logs", "Log"),
+    "mangrove": ("Mangrove", "mangrove_planks", "mangrove_log", "mangrove_log_top", "stripped_mangrove_log",
+                 "mangrove_logs", "Log"),
+    "cherry": ("Cherry", "cherry_planks", "cherry_log", "cherry_log_top", "stripped_cherry_log", "cherry_logs", "Log"),
+    "pale_oak": ("Pale Oak", "pale_oak_planks", "pale_oak_log", "pale_oak_log_top", "stripped_pale_oak_log",
+                 "pale_oak_logs", "Log"),
+    "poplar": ("Poplar", "poplar_planks", "poplar_log", "poplar_log_top", "stripped_poplar_log", "poplar_logs", "Log"),
+    "crimson": ("Crimson", "crimson_planks", "crimson_stem", "crimson_stem_top", "stripped_crimson_stem",
+                "crimson_stems", "Stem"),
+    "warped": ("Warped", "warped_planks", "warped_stem", "warped_stem_top", "stripped_warped_stem", "warped_stems",
+               "Stem"),
+}
+
+# The colour Minecraft tints things of each dye colour with (its firework colour), which Paladin uses for lamp shades
+# and office chairs.
+DYES = {
+    "white": 0xF0F0F0, "orange": 0xEB8844, "magenta": 0xC354CD, "light_blue": 0x6689D3, "yellow": 0xDECF2A,
+    "lime": 0x41CD34, "pink": 0xD88198, "gray": 0x434343, "light_gray": 0xABABAB, "cyan": 0x287697,
+    "purple": 0x7B2FBE, "blue": 0x253192, "brown": 0x51301A, "green": 0x3B511A, "red": 0xB3312C, "black": 0x1E1B1B,
+}
+
+
+def block(name: str) -> str:
+    return f"minecraft:block/{name}"
+
+
+def planks_and_log(wood: str) -> dict:
+    _, planks, log, _, _, _, _ = WOODS[wood]
+    return {block("oak_planks"): block(planks), block("oak_log"): block(log)}
+
+
+def log_and_top(wood: str) -> dict:
+    _, _, log, top, _, _, _ = WOODS[wood]
+    return {block("oak_log"): block(log), block("oak_log_top"): block(top)}
+
+
+def stripped_log(wood: str) -> dict:
+    return {block("stripped_oak_log"): block(WOODS[wood][4])}
+
+
+def face(texture: str, uv: list, rotation: int = 0) -> dict:
+    return {"texture": texture, "uv": uv, "rotation": rotation} if rotation else {"texture": texture, "uv": uv}
+
+
+# Paladin's mattresses used the bed entity texture, which Minecraft 26.1 split into one texture per face of the bed
+# block. These are its mattress and pillow rebuilt on those textures for the red bed (beds are recoloured like the
+# wood), laid out like Paladin's whole-bed frame: two blocks along x, the foot from x 0 and the headboard at x 32. A
+# mattress side shows rows 7 to 10 of the side textures, the strip vanilla beds show.
+MATTRESS = {
+    "textures": {
+        "head_up": block("red_bed_head_up"), "foot_up": block("red_bed_foot_up"),
+        "head_east": block("red_bed_head_east"), "head_west": block("red_bed_head_west"),
+        "foot_east": block("red_bed_foot_east"), "foot_west": block("red_bed_foot_west"),
+        "foot_south": block("red_bed_foot_south"), "pillow": block("bed_head_north"),
+    },
+    "elements": [
+        {"from": [3, 5, 0], "to": [16, 9, 16], "faces": {
+            "up": face("#foot_up", [0, 0, 16, 13], 90),
+            "north": face("#foot_west", [0, 7, 13, 10]),
+            "south": face("#foot_east", [3, 7, 16, 10]),
+            "west": face("#foot_south", [0, 7, 16, 10]),
+        }},
+        {"from": [16, 5, 0], "to": [29, 9, 16], "faces": {
+            "up": face("#head_up", [0, 3, 16, 16], 90),
+            "north": face("#head_west", [3, 7, 16, 10]),
+            "south": face("#head_east", [0, 7, 13, 10]),
+        }},
+        {"from": [21, 9, 1], "to": [29, 10, 15], "faces": {
+            "up": face("#head_up", [2, 1, 14, 7], 90),
+            "north": face("#pillow", [1, 7, 9, 8]),
+            "south": face("#pillow", [1, 7, 9, 8]),
+            "west": face("#pillow", [1, 7, 15, 8]),
+        }},
+    ],
+}
+
+
+def bedding(wood: str, colour: str) -> dict:
+    textures = {block("oak_planks"): block(WOODS[wood][1])}
+    for part in ("head_up", "foot_up", "head_east", "head_west", "foot_east", "foot_west", "foot_south"):
+        textures[block(f"red_bed_{part}")] = block(f"{colour}_bed_{part}")
+    return textures
+
+
+def variant(id, name, family, parts, substitutions, inputs, placement="floor", angle=0, seat=False, solid=True,
+            light=0, height=1, length=1):
+    """A piece retextured from its family's template, which every variant shares a Bedrock geometry with."""
+    entry = item(id, name, None, inputs, placement, angle, seat, solid, light, height)
+    entry.update({"family": family, "parts": parts, "substitutions": substitutions, "length": length})
+    return entry
+
+
+# Wooden families: Paladin's part models for one free-standing piece, its name with the wood as {wood} and its log
+# as {log}, how the wood is swapped in, and how the plugin places it.
+WOODEN = [
+    ("table_basic", "Basic {wood} Table", ["table_basic/table_basic"], planks_and_log, {}),
+    ("table_classic", "Classic {wood} Table", ["table_classic/table_classic"], planks_and_log, {}),
+    ("log_table", "{wood} {log} Table", ["log_table/log_table"], planks_and_log, {}),
+    ("table_modern_dinner", "{wood} Modern Dining Table", ["table_modern_dinner/table_modern_dinner"],
+     planks_and_log, {}),
+    ("coffee_table_classic", "Classic {wood} Coffee Table", ["coffee_table_classic/coffee_table_classic"],
+     planks_and_log, {}),
+    ("coffee_table_modern", "Modern {wood} Coffee Table", ["coffee_table_modern/coffee_table_modern"],
+     planks_and_log, {}),
+    ("desk_basic", "Basic {wood} Desk",
+     ["basic_desk/basic_desk_base", "basic_desk/basic_desk_north_east", "basic_desk/basic_desk_north_west",
+      "basic_desk/basic_desk_south_east", "basic_desk/basic_desk_south_west"], planks_and_log, {}),
+    ("desk_cabinet_basic", "Basic {wood} Desk Cabinet",
+     ["basic_desk_cabinet/basic_desk_cabinet_closed", "basic_desk_cabinet/basic_desk_cabinet_leg_north_east",
+      "basic_desk_cabinet/basic_desk_cabinet_leg_north_west", "basic_desk_cabinet/basic_desk_cabinet_leg_south_east",
+      "basic_desk_cabinet/basic_desk_cabinet_leg_south_west"], planks_and_log, {"angle": 270}),
+    ("desk_cabinet_classic", "Classic {wood} Desk Cabinet", ["classic_desk/classic_desk_cabinet_all"],
+     planks_and_log, {"angle": 90}),
+    ("classic_nightstand", "{wood} Classic Nightstand", ["classic_nightstand/classic_nightstand"], planks_and_log,
+     {"angle": 180}),
+    ("log_stool", "{wood} {log} Stool", ["log_stool/log_stool"], log_and_top, {"seat": True}),
+    ("simple_stool", "{wood} Simple Stool", ["simple_stool/simple_stool"], planks_and_log, {"seat": True}),
+    ("modern_stool", "{wood} Modern Stool", ["modern_stool/modern_stool"], planks_and_log, {"seat": True}),
+    ("kitchen_counter", "{wood} Kitchen Counter", ["kitchen_counter/kitchen_counter"], planks_and_log, {"angle": 90}),
+    ("kitchen_drawer", "{wood} Kitchen Drawer", ["kitchen_drawer/kitchen_drawer"], planks_and_log, {"angle": 90}),
+    ("kitchen_sink", "{wood} Kitchen Sink", ["kitchen_sink/kitchen_sink"], planks_and_log, {"angle": 90}),
+    ("kitchen_counter_oven", "{wood} Kitchen Oven", ["kitchen_counter_oven/kitchen_counter_oven"], planks_and_log,
+     {"angle": 90}),
+    ("kitchen_cabinet", "{wood} Wall Cabinet", ["kitchen_cabinet/kitchen_cabinet"], planks_and_log,
+     {"placement": "wall", "angle": 270}),
+    ("kitchen_wall_counter", "{wood} Kitchen Filler Cabinet", ["kitchen_counter/kitchen_counter_middle"],
+     planks_and_log, {"placement": "wall", "angle": 270}),
+    ("kitchen_wall_drawer", "{wood} Kitchen Cabinet", ["kitchen_drawer/kitchen_drawer_middle"], planks_and_log,
+     {"placement": "wall", "angle": 270}),
+    ("kitchen_wall_small_drawer", "{wood} Kitchen Small Cabinet", ["kitchen_wall_drawer_small/kitchen_wall_drawer_small"],
+     planks_and_log, {"placement": "wall", "angle": 270}),
+    ("simple_bunk_ladder", "{wood} Simple Bunk Ladder", ["simple_bunk_ladder/simple_ladder"], planks_and_log,
+     {"placement": "wall", "angle": 90, "solid": False}),
+]
+
+
+def family_items():
+    """Paladin's furniture that comes in each wood, and in each colour: the pieces whose looks share a template."""
+    for family, name, parts, swap, options in WOODEN:
+        models = [f"pfm:block/{part}" for part in parts]
+        for wood, (wood_name, _, _, _, _, tag, log) in WOODS.items():
+            yield variant(f"{wood}_{family}", name.format(wood=wood_name, log=log), family, models, swap(wood),
+                          [f"#{tag}"], **options)
+    for style in ("simple", "classic"):
+        parts = [f"pfm:block/{style}_bed/template/full/{style}_bed", MATTRESS]
+        for wood, (wood_name, *_) in WOODS.items():
+            for colour in COLOURS:
+                yield variant(f"{wood}_{colour}_{style}_bed", f"{wood_name} {title(colour)} {title(style)} Bed",
+                              f"{style}_bed", parts, bedding(wood, colour), [f"{colour}_bed"], angle=180, length=2)
+    lamp = ["pfm:block/basic_lamp/basic_lamp_single", "pfm:block/basic_lamp/basic_lamp_shade",
+            "pfm:block/basic_lamp/basic_lamp_light_bulb_on"]
+    for wood, (wood_name, *_) in WOODS.items():
+        for colour in COLOURS:
+            yield variant(f"basic_{colour}_{wood}_lamp", f"Basic {title(colour)} {wood_name} Lamp", "basic_lamp", lamp,
+                          {**stripped_log(wood), "pfm:block/lamp_shade": ("tint", DYES[colour], colour)},
+                          [f"{colour}_wool"], solid=False, light=15)
+    chair = ["pfm:block/office_chair/office_chair"]
+    for colour in COLOURS:
+        tint = ("tint", DYES[colour], colour)
+        yield variant(f"{colour}_office_chair", f"{title(colour)} Office Chair", "office_chair", chair,
+                      {"pfm:block/office_chair/office_chair_back": tint, "pfm:block/office_chair/office_chair_seat": tint},
+                      [f"{colour}_wool"], angle=270, seat=True)

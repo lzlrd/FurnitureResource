@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/kitchen_cabinet",
+	"textures": {
+		"p0_base": "minecraft:block/crimson_planks",
+		"p0_legs": "minecraft:block/crimson_stem",
+		"p0_particle": "minecraft:block/crimson_planks"
+	}
+}

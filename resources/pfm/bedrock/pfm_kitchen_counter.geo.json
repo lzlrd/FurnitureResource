@@ -1,0 +1,233 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.pfm_kitchen_counter",
+				"texture_width": 32,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2,
+				"visible_bounds_offset": [
+					0,
+					0.5,
+					0
+				]
+			},
+			"bones": [
+				{
+					"name": "pfm_kitchen_counter",
+					"pivot": [
+						8,
+						0,
+						-8
+					],
+					"cubes": [
+						{
+							"origin": [
+								-8,
+								0,
+								-8
+							],
+							"size": [
+								16,
+								1,
+								12
+							],
+							"uv": {
+								"north": {
+									"uv": [
+										0,
+										41
+									],
+									"uv_size": [
+										16,
+										1
+									]
+								},
+								"east": {
+									"uv": [
+										16,
+										41
+									],
+									"uv_size": [
+										12,
+										1
+									]
+								},
+								"south": {
+									"uv": [
+										0,
+										41
+									],
+									"uv_size": [
+										16,
+										1
+									]
+								},
+								"west": {
+									"uv": [
+										16,
+										41
+									],
+									"uv_size": [
+										12,
+										1
+									]
+								},
+								"down": {
+									"uv": [
+										16,
+										41
+									],
+									"uv_size": [
+										-16,
+										-12
+									]
+								}
+							}
+						},
+						{
+							"origin": [
+								-8,
+								1,
+								-8
+							],
+							"size": [
+								16,
+								13,
+								13
+							],
+							"uv": {
+								"north": {
+									"uv": [
+										16,
+										0
+									],
+									"uv_size": [
+										16,
+										13
+									]
+								},
+								"east": {
+									"uv": [
+										16,
+										16
+									],
+									"uv_size": [
+										13,
+										13
+									]
+								},
+								"south": {
+									"uv": [
+										16,
+										0
+									],
+									"uv_size": [
+										16,
+										13
+									]
+								},
+								"west": {
+									"uv": [
+										16,
+										16
+									],
+									"uv_size": [
+										13,
+										13
+									]
+								},
+								"down": {
+									"uv": [
+										16,
+										29
+									],
+									"uv_size": [
+										-16,
+										-13
+									]
+								}
+							}
+						},
+						{
+							"origin": [
+								-8,
+								14,
+								-8
+							],
+							"size": [
+								16,
+								2,
+								16
+							],
+							"uv": {
+								"north": {
+									"uv": [
+										16,
+										29
+									],
+									"uv_size": [
+										16,
+										2
+									]
+								},
+								"east": {
+									"uv": [
+										16,
+										29
+									],
+									"uv_size": [
+										16,
+										2
+									]
+								},
+								"south": {
+									"uv": [
+										16,
+										29
+									],
+									"uv_size": [
+										16,
+										2
+									]
+								},
+								"west": {
+									"uv": [
+										16,
+										29
+									],
+									"uv_size": [
+										16,
+										2
+									]
+								},
+								"up": {
+									"uv": [
+										16,
+										16
+									],
+									"uv_size": [
+										-16,
+										-16
+									]
+								},
+								"down": {
+									"uv": [
+										16,
+										16
+									],
+									"uv_size": [
+										-16,
+										-16
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

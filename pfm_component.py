@@ -6,12 +6,17 @@ from mcresourcelib import CustomModelCompoment
 
 PFM = "resources/pfm"
 
+# The Bedrock geometry each piece of a family shares, by item; other pieces have their own.
+with open(f"{PFM}/geometry.json") as f:
+    GEOMETRY = json.load(f)
+
 
 class PfmModelCompoment(CustomModelCompoment):
     """A piece imported from Paladin's Furniture by tools/import_pfm.py.
 
-    Java: the imported model, with the Paladin textures it uses under block/pfm/.
-    Bedrock: the imported geometry and atlas, with the same attachable as the other pieces.
+    Java: the imported model, with the Paladin textures it uses under block/pfm/ and its family's template under
+    models/pfm/.
+    Bedrock: the imported geometry, or its family's, and its atlas, with the same attachable as the other pieces.
     """
 
     def __init__(self, namespace: str, item: str, item_base: str) -> None:
@@ -26,12 +31,17 @@ class PfmModelCompoment(CustomModelCompoment):
         textures = f"{self.output}/assets/{self.namespace}/textures/block/pfm"
         if not os.path.isdir(textures):
             shutil.copytree(f"{PFM}/textures", textures)
+        templates = f"{self.output}/assets/{self.namespace}/models/pfm"
+        if not os.path.isdir(templates):
+            shutil.copytree(f"{PFM}/models/pfm", templates)
 
     def run_be(self) -> None:
         os.makedirs(f"{self.output_be}/models/entity", exist_ok=True)
         os.makedirs(f"{self.output_be}/textures/pfm", exist_ok=True)
         os.makedirs(f"{self.output_be}/attachables", exist_ok=True)
-        shutil.copy(f"{PFM}/bedrock/{self.item}.geo.json", f"{self.output_be}/models/entity/{self.item}.geo.json")
+        geometry = GEOMETRY.get(self.item, self.item)
+        if not os.path.exists(f"{self.output_be}/models/entity/{geometry}.geo.json"):
+            shutil.copy(f"{PFM}/bedrock/{geometry}.geo.json", f"{self.output_be}/models/entity/{geometry}.geo.json")
         shutil.copy(f"{PFM}/bedrock/{self.item}.png", f"{self.output_be}/textures/pfm/{self.item}.png")
         texture = f"textures/pfm/{self.item}"
         with open(f"{self.output_be}/attachables/{self.item}.json", "w") as f:
@@ -43,7 +53,7 @@ class PfmModelCompoment(CustomModelCompoment):
                             "identifier": f"{self.namespace}:{self.item}",
                             "materials": {"default": "entity_alphatest", "enchanted": "entity_alphatest_glint"},
                             "textures": {"default": texture, "enchanted": "textures/misc/enchanted_item_glint"},
-                            "geometry": {"default": f"geometry.{self.item}"},
+                            "geometry": {"default": f"geometry.{geometry}"},
                             "render_controllers": ["controller.render.item_default"],
                             "scripts": {
                                 "parent_setup": "variable.is_first_person = 0.0;",

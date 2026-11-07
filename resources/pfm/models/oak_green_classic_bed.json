@@ -1,0 +1,12 @@
+{
+	"parent": "cutebear_furniture:pfm/classic_bed",
+	"textures": {
+		"p1_head_up": "minecraft:block/green_bed_head_up",
+		"p1_foot_up": "minecraft:block/green_bed_foot_up",
+		"p1_head_east": "minecraft:block/green_bed_head_east",
+		"p1_head_west": "minecraft:block/green_bed_head_west",
+		"p1_foot_east": "minecraft:block/green_bed_foot_east",
+		"p1_foot_west": "minecraft:block/green_bed_foot_west",
+		"p1_foot_south": "minecraft:block/green_bed_foot_south"
+	}
+}

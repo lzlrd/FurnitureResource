@@ -1,0 +1,8 @@
+{
+	"parent": "cutebear_furniture:pfm/log_stool",
+	"textures": {
+		"p0_top": "minecraft:block/spruce_log_top",
+		"p0_side": "minecraft:block/spruce_log",
+		"p0_particle": "minecraft:block/spruce_log"
+	}
+}

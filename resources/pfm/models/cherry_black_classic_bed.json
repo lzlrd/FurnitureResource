@@ -1,0 +1,14 @@
+{
+	"parent": "cutebear_furniture:pfm/classic_bed",
+	"textures": {
+		"p0_0": "minecraft:block/cherry_planks",
+		"p0_particle": "minecraft:block/cherry_planks",
+		"p1_head_up": "minecraft:block/black_bed_head_up",
+		"p1_foot_up": "minecraft:block/black_bed_foot_up",
+		"p1_head_east": "minecraft:block/black_bed_head_east",
+		"p1_head_west": "minecraft:block/black_bed_head_west",
+		"p1_foot_east": "minecraft:block/black_bed_foot_east",
+		"p1_foot_west": "minecraft:block/black_bed_foot_west",
+		"p1_foot_south": "minecraft:block/black_bed_foot_south"
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/simple_bunk_ladder",
+	"textures": {
+		"p0_0": "minecraft:block/mangrove_planks",
+		"p0_particle": "minecraft:block/mangrove_planks"
+	}
+}

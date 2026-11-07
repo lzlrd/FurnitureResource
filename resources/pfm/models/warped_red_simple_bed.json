@@ -1,0 +1,7 @@
+{
+	"parent": "cutebear_furniture:pfm/simple_bed",
+	"textures": {
+		"p0_0": "minecraft:block/warped_planks",
+		"p0_particle": "minecraft:block/warped_planks"
+	}
+}
