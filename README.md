@@ -43,7 +43,15 @@ After changing `pfm_items.py`, check out that commit of [Paladin's Furniture](ht
 python3 -I tools/import_pfm.py path/to/paladins-furniture/common/src/main/resources/assets/pfm path/to/client.jar
 ```
 
-It merges each Java model's parents, copies the Paladin textures it uses, bakes Bedrock geometry and a texture atlas, and writes `resources/pfm/furniture.json`. Copy that file to the plugin's `src/main/resources`: the plugin reads it for each piece's recipe, placement, seat, light and barriers.
+It merges each Java model's parents, copies the Paladin textures it uses, bakes Bedrock geometry and a texture atlas, and writes `resources/pfm/furniture.json`. Copy that file to the plugin's `src/main/resources`: the plugin reads it for each piece's recipe, placement, seat, light and barriers, and for what right-clicking it does: `storage` (the slots it holds), `bed` (the colour of vanilla bed it sleeps as), `use` (`stonecutter` for the furniture workbench) and `climb` (a ladder). A change to `pfm_items.py` that touches only these, or a piece's seat, light or footprint, doesn't need Paladin's assets:
+
+```sh
+python3 -I tools/import_pfm.py --registry
+```
+
+rewrites `furniture.json` alone.
+
+The Bedrock pack draws each piece's inventory icon from its geometry and texture as it stands when placed (`tools/icons.py`), so Bedrock inventories show the piece rather than its texture atlas.
 
 To check a build against the last release, with the release's three files and a client jar:
 

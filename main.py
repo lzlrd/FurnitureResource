@@ -7,6 +7,7 @@ import uuid
 from variant_component import VariantModelCompoment
 from variants import variants
 from pfm_component import PfmModelCompoment, pfm_items
+from icon_component import IconCompoment
 namespace="cutebear_furniture"
 
 info = {
@@ -66,6 +67,9 @@ for item, parent, substitutions in variants():
 # The rest of Paladin's furniture, imported with tools/import_pfm.py.
 for item in pfm_items():
     pack.add(PfmModelCompoment(namespace, item, BASE_ITEM))
+
+# Bedrock inventory icons drawn from each piece's geometry. Keep it after every piece.
+pack.add(IconCompoment(namespace))
 
 
 pack.run("../cutebear_furniture.zip")

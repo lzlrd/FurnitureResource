@@ -1,11 +1,14 @@
 """Import the furniture in pfm_items.py from Paladin's Furniture into resources/pfm/.
 
 Usage: python3 -I tools/import_pfm.py PFM_ASSETS_DIR CLIENT_JAR
+       python3 -I tools/import_pfm.py --registry
 
 PFM_ASSETS_DIR is common/src/main/resources/assets/pfm from Paladin's Furniture at commit 01ec5d7, the last one before
 its models and textures moved from LGPL-3.0 to the PolyForm Shield licence. CLIENT_JAR is a Minecraft client jar for
 the vanilla textures the models use. Writes, for each item, the Java model (models/), the Bedrock geometry and atlas
 (bedrock/), the Paladin textures the Java models need (textures/), and furniture.json, which the plugin reads.
+--registry rewrites furniture.json alone, without Paladin's assets, for changes to how the plugin places or uses
+pieces.
 
 A family (the pieces that come in each wood or colour) gets one template: a Java model in models/pfm/ that each
 piece's model retextures, and a Bedrock geometry that each piece's atlas fits. geometry.json names it for each piece.
@@ -40,9 +43,9 @@ def yaw_offset(entry: dict) -> int:
 
 
 def entry_for(entry: dict, length: int = 1) -> dict:
-    """What furniture.json says about an item."""
+    """What furniture.json says about an item. storage, bed, use and climb are left out when a piece has none."""
     footprint = [[x, y, 0] for x in range(length) for y in range(entry["height"])] if entry["solid"] else []
-    return {
+    result = {
         "id": entry["id"],
         "name": entry["name"],
         "inputs": entry["inputs"],
@@ -52,6 +55,21 @@ def entry_for(entry: dict, length: int = 1) -> dict:
         "light": entry["light"],
         "footprint": footprint,
     }
+    for key in ("storage", "bed", "use", "climb"):
+        if entry.get(key):
+            result[key] = entry[key]
+    return result
+
+
+def furniture_registry() -> list:
+    """furniture.json's items, in the order main() writes them: the single pieces, then each family."""
+    entries = [entry_for(entry) for entry in items()]
+    families = {}
+    for entry in family_items():
+        families.setdefault(entry["family"], []).append(entry)
+    for family_entries in families.values():
+        entries.extend(entry_for(entry, entry["length"]) for entry in family_entries)
+    return entries
 
 
 def write_json(path: Path, data: dict) -> None:
@@ -59,6 +77,12 @@ def write_json(path: Path, data: dict) -> None:
 
 
 def main() -> None:
+    if sys.argv[1:] == ["--registry"]:
+        # Rewrites furniture.json alone, for changes to how the plugin places or uses pieces.
+        entries = furniture_registry()
+        write_json(OUT / "furniture.json", {"items": entries})
+        print(f"{len(entries)} items written to {(OUT / 'furniture.json').relative_to(ROOT)}")
+        return
     sources = Sources(Path(sys.argv[1]), Path(sys.argv[2]))
     if OUT.exists():
         shutil.rmtree(OUT)

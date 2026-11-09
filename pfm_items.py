@@ -22,9 +22,13 @@ def title(text: str) -> str:
     return " ".join(word.capitalize() for word in text.split("_"))
 
 
-def item(id, name, model, inputs, placement="floor", angle=0, seat=False, solid=True, light=0, height=1):
+def item(id, name, model, inputs, placement="floor", angle=0, seat=False, solid=True, light=0, height=1, storage=0,
+         bed=None, use=None, climb=False):
+    """storage: chest slots (9, 27 or 54). bed: the bed colour a bed sleeps as. use: what right-clicking opens.
+    climb: whether players climb the piece like a ladder."""
     return {"id": id, "name": name, "model": model, "inputs": inputs, "placement": placement, "angle": angle,
-            "seat": seat, "solid": solid, "light": light, "height": height}
+            "seat": seat, "solid": solid, "light": light, "height": height, "storage": storage, "bed": bed, "use": use,
+            "climb": climb}
 
 
 def items():
@@ -45,17 +49,17 @@ def items():
         folder = "iron_fridge" if finish == "iron" else f"{finish}_fridge"
         fridge = "iron_fridge_single" if finish == "iron" else "fridge_single"
         freezer = "iron_freezer" if finish == "iron" else "freezer_single"
-        yield item(f"{finish}_fridge", f"{name} Fridge", f"pfm:block/{folder}/{fridge}", [block], angle=270)
-        yield item(f"{finish}_freezer", f"{name} Freezer", f"pfm:block/{folder}/{freezer}", [block], angle=270)
+        yield item(f"{finish}_fridge", f"{name} Fridge", f"pfm:block/{folder}/{fridge}", [block], angle=270, storage=54)
+        yield item(f"{finish}_freezer", f"{name} Freezer", f"pfm:block/{folder}/{freezer}", [block], angle=270,
+                   storage=54)
         yield item(f"{finish}_stove", f"{name} Stove", f"pfm:block/{finish}_stove", [block], angle=270)
         yield item(f"{finish}_oven_range_hood", f"{name} Oven Range Hood",
-                   f"pfm:block/{finish}_oven_range_hood/{finish}_oven_range_hood", [block], "wall", 270, solid=False)
+                   f"pfm:block/{finish}_oven_range_hood/{finish}_oven_range_hood", [block], "wall", 270)
     yield item("xbox_fridge", "Xbox Series X Fridge", "pfm:block/xbox_fridge/xbox_fridge_full", ["black_concrete"],
-               angle=270, height=2)
+               angle=270, height=2, storage=54)
     yield item("iron_microwave", "Iron Microwave", "pfm:block/iron_microwave/iron_microwave", ["iron_block"],
-               angle=270, solid=False)
-    yield item("iron_toaster", "Iron Toaster", "pfm:block/iron_toaster/iron_toaster_off", ["iron_block"],
-               angle=90, solid=False)
+               angle=270)
+    yield item("iron_toaster", "Iron Toaster", "pfm:block/iron_toaster/iron_toaster_off", ["iron_block"], angle=90)
     yield item("kitchen_stovetop", "Kitchen Stovetop", "pfm:block/kitchen_counter/kitchen_stovetop", ["iron_block"],
                angle=270, solid=False)
 
@@ -79,8 +83,9 @@ def items():
                90, solid=False)
     yield item("wall_toilet_paper", "Toilet Paper", "pfm:block/wall_toilet_paper/toilet_paper_wall", ["paper"], "wall",
                90, solid=False)
-    yield item("mesh_trashcan", "Mesh Trashcan", "pfm:block/mesh_trashcan", ["iron_bars"], angle=270)
-    yield item("working_table", "Furniture Workbench", "pfm:block/working_table", ["crafting_table"], angle=270)
+    yield item("mesh_trashcan", "Mesh Trashcan", "pfm:block/mesh_trashcan", ["iron_bars"], angle=270, storage=27)
+    yield item("working_table", "Furniture Workbench", "pfm:block/working_table", ["crafting_table"], angle=270,
+               use="stonecutter")
 
 
 # The woods the first pieces come in: name, planks, log, its top, stripped log, the item tag of its logs, and what
@@ -177,9 +182,9 @@ def bedding(wood: str, colour: str) -> dict:
 
 
 def variant(id, name, family, parts, substitutions, inputs, placement="floor", angle=0, seat=False, solid=True,
-            light=0, height=1, length=1):
+            light=0, height=1, length=1, storage=0, bed=None, use=None, climb=False):
     """A piece retextured from its family's template, which every variant shares a Bedrock geometry with."""
-    entry = item(id, name, None, inputs, placement, angle, seat, solid, light, height)
+    entry = item(id, name, None, inputs, placement, angle, seat, solid, light, height, storage, bed, use, climb)
     entry.update({"family": family, "parts": parts, "substitutions": substitutions, "length": length})
     return entry
 
@@ -202,29 +207,32 @@ WOODEN = [
     ("desk_cabinet_basic", "Basic {wood} Desk Cabinet",
      ["basic_desk_cabinet/basic_desk_cabinet_closed", "basic_desk_cabinet/basic_desk_cabinet_leg_north_east",
       "basic_desk_cabinet/basic_desk_cabinet_leg_north_west", "basic_desk_cabinet/basic_desk_cabinet_leg_south_east",
-      "basic_desk_cabinet/basic_desk_cabinet_leg_south_west"], planks_and_log, {"angle": 270}),
+      "basic_desk_cabinet/basic_desk_cabinet_leg_south_west"], planks_and_log, {"angle": 270, "storage": 27}),
     ("desk_cabinet_classic", "Classic {wood} Desk Cabinet", ["classic_desk/classic_desk_cabinet_all"],
-     planks_and_log, {"angle": 90}),
+     planks_and_log, {"angle": 90, "storage": 27}),
     ("classic_nightstand", "{wood} Classic Nightstand", ["classic_nightstand/classic_nightstand"], planks_and_log,
-     {"angle": 180}),
+     {"angle": 180, "storage": 9}),
     ("log_stool", "{wood} {log} Stool", ["log_stool/log_stool"], log_and_top, {"seat": True}),
     ("simple_stool", "{wood} Simple Stool", ["simple_stool/simple_stool"], planks_and_log, {"seat": True}),
     ("modern_stool", "{wood} Modern Stool", ["modern_stool/modern_stool"], planks_and_log, {"seat": True}),
-    ("kitchen_counter", "{wood} Kitchen Counter", ["kitchen_counter/kitchen_counter"], planks_and_log, {"angle": 90}),
-    ("kitchen_drawer", "{wood} Kitchen Drawer", ["kitchen_drawer/kitchen_drawer"], planks_and_log, {"angle": 90}),
-    ("kitchen_sink", "{wood} Kitchen Sink", ["kitchen_sink/kitchen_sink"], planks_and_log, {"angle": 90}),
+    ("kitchen_counter", "{wood} Kitchen Counter", ["kitchen_counter/kitchen_counter"], planks_and_log,
+     {"angle": 90, "storage": 27}),
+    ("kitchen_drawer", "{wood} Kitchen Drawer", ["kitchen_drawer/kitchen_drawer"], planks_and_log,
+     {"angle": 90, "storage": 27}),
+    ("kitchen_sink", "{wood} Kitchen Sink", ["kitchen_sink/kitchen_sink"], planks_and_log,
+     {"angle": 90, "storage": 27}),
     ("kitchen_counter_oven", "{wood} Kitchen Oven", ["kitchen_counter_oven/kitchen_counter_oven"], planks_and_log,
      {"angle": 90}),
     ("kitchen_cabinet", "{wood} Wall Cabinet", ["kitchen_cabinet/kitchen_cabinet"], planks_and_log,
-     {"placement": "wall", "angle": 270}),
+     {"placement": "wall", "angle": 270, "storage": 27}),
     ("kitchen_wall_counter", "{wood} Kitchen Filler Cabinet", ["kitchen_counter/kitchen_counter_middle"],
-     planks_and_log, {"placement": "wall", "angle": 270}),
+     planks_and_log, {"placement": "wall", "angle": 270, "storage": 27}),
     ("kitchen_wall_drawer", "{wood} Kitchen Cabinet", ["kitchen_drawer/kitchen_drawer_middle"], planks_and_log,
-     {"placement": "wall", "angle": 270}),
+     {"placement": "wall", "angle": 270, "storage": 27}),
     ("kitchen_wall_small_drawer", "{wood} Kitchen Small Cabinet", ["kitchen_wall_drawer_small/kitchen_wall_drawer_small"],
-     planks_and_log, {"placement": "wall", "angle": 270}),
+     planks_and_log, {"placement": "wall", "angle": 270, "storage": 9}),
     ("simple_bunk_ladder", "{wood} Simple Bunk Ladder", ["simple_bunk_ladder/simple_ladder"], planks_and_log,
-     {"placement": "wall", "angle": 90, "solid": False}),
+     {"placement": "wall", "angle": 90, "solid": False, "climb": True}),
 ]
 
 
@@ -365,14 +373,15 @@ def family_items():
         for wood, (wood_name, *_) in WOODS.items():
             for colour in COLOURS:
                 yield variant(f"{wood}_{colour}_{style}_bed", f"{wood_name} {title(colour)} {title(style)} Bed",
-                              f"{style}_bed", parts, bedding(wood, colour), [f"{colour}_bed"], angle=180, length=2)
+                              f"{style}_bed", parts, bedding(wood, colour), [f"{colour}_bed"], angle=180, length=2,
+                              bed=colour)
     lamp = ["pfm:block/basic_lamp/basic_lamp_single", "pfm:block/basic_lamp/basic_lamp_shade",
             "pfm:block/basic_lamp/basic_lamp_light_bulb_on"]
     for wood, (wood_name, *_) in WOODS.items():
         for colour in COLOURS:
             yield variant(f"basic_{colour}_{wood}_lamp", f"Basic {title(colour)} {wood_name} Lamp", "basic_lamp", lamp,
                           {**stripped_log(wood), "pfm:block/lamp_shade": ("tint", DYES[colour], colour)},
-                          [f"{colour}_wool"], solid=False, light=15)
+                          [f"{colour}_wool"], light=15)
     chair = ["pfm:block/office_chair/office_chair"]
     for colour in COLOURS:
         tint = ("tint", DYES[colour], colour)
